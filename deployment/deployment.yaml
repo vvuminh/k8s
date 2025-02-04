@@ -1,0 +1,52 @@
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#     name: carservice
+
+# ---
+
+
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: app-secrets
+#   namespace: carservice
+# type: Opaque
+# stringData:
+#   MESSAGE: "TEST env secret"
+# # data:
+# #   # You can add sensitive environment variables here
+# #   # Values must be base64 encoded
+# #   MESSAGE: SGVsbG8gZnJvbSBLOHMgU2VjcmV0IQ== # "Hello from K8s Secret!" 
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend-api
+  name: hello-api
+  # namespace: carservice
+spec:
+  replicas: 1
+  revisionHistoryLimit: 11
+  selector:
+    matchLabels:
+      app: backend-api
+  template:
+    metadata:
+      labels:
+        app: backend-api
+      namespace: carservice
+    spec:
+      containers:
+        - image: minhvv262/k8s-ci-cd:amd64
+          imagePullPolicy: Always
+          name: api
+          ports:
+            - containerPort: 3000
+              name: tcp
+              protocol: TCP
+          # envFrom:
+          # - secretRef:
+          #     name: app-secrets 
