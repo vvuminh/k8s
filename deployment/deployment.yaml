@@ -40,7 +40,7 @@ spec:
       namespace: carservice
     spec:
       containers:
-        - image: minhvv262/k8s-ci-cd:amd64
+        - image: minhvv262/k8s-ci-cd:amd64v2
           imagePullPolicy: Always
           name: api
           ports:
